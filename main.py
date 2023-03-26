@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import *
+from tkinter import messagebox
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -9,7 +10,20 @@ def generate_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_password():
-    pass
+
+    if len(website_entry.get()) == 0:
+        messagebox.showwarning(title="Website Data missing", message="Website Data missing")
+    elif len(email_entry.get()) == 0:
+        messagebox.showwarning(title="Email Data missing", message="Email Data missing")
+    elif len(password_entry.get()) == 0:
+        messagebox.showwarning(title="Password Data missing", message="Password Data missing")
+    else:
+        isok = messagebox.askyesno(title= website_entry.get(), message= f"Email: {email_entry.get()}\n Password:{password_entry.get()}\n Should we proceed?")
+        if isok:
+            with open("data.txt",mode="a") as file:
+                file.writelines(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
+            website_entry.delete(0,END)
+            password_entry.delete(0,END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
