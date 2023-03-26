@@ -1,16 +1,36 @@
 import tkinter
 from tkinter import *
 from tkinter import messagebox
+import random
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
-    pass
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    password_list = [random.choice(letters) for char in range(0, nr_letters)]
+    password_list += [random.choice(symbols) for char in range(0, nr_symbols)]
+    password_list += [random.choice(numbers) for char in range(0, nr_numbers)]
+    print(password_list)
+    random.shuffle(password_list)
+
+    password = "".join(password_list)
+    # for char in password_list:
+    #     password += char
+
+    password_entry.insert(0, password)
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_password():
-
     if len(website_entry.get()) == 0:
         messagebox.showwarning(title="Website Data missing", message="Website Data missing")
     elif len(email_entry.get()) == 0:
@@ -18,12 +38,13 @@ def add_password():
     elif len(password_entry.get()) == 0:
         messagebox.showwarning(title="Password Data missing", message="Password Data missing")
     else:
-        isok = messagebox.askyesno(title= website_entry.get(), message= f"Email: {email_entry.get()}\n Password:{password_entry.get()}\n Should we proceed?")
+        isok = messagebox.askyesno(title=website_entry.get(),
+                                   message=f"Email: {email_entry.get()}\n Password:{password_entry.get()}\n Should we proceed?")
         if isok:
-            with open("data.txt",mode="a") as file:
+            with open("data.txt", mode="a") as file:
                 file.writelines(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
-            website_entry.delete(0,END)
-            password_entry.delete(0,END)
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -48,7 +69,7 @@ email_label = tkinter.Label(text="Email/Username: ")
 email_label.grid(column=0, row=2)
 email_entry = tkinter.Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2)
-email_entry.insert(index=0,string="yasowant@live.com")
+email_entry.insert(index=0, string="yasowant@live.com")
 
 password_label = tkinter.Label(text="Password: ")
 password_label.grid(column=0, row=3)
