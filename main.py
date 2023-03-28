@@ -7,17 +7,26 @@ import pyperclip
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def search_website():
-    with open("data.json","r") as fileread:
-        readdata = json.load(fileread)
-        wsite = website_entry.get()
+    try:
+        fileread = open("data.json","r")
+    except FileNotFoundError:
+        messagebox.showinfo(title="No Data file", message="No Data file")
+    else:
         try:
-            email = readdata[wsite]["email"]
-            pwd = readdata[wsite]["pwd"]
-        #messagebox.INFO(f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
-            messagebox.showinfo(title="Hello", message = f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
-        except KeyError:
-            messagebox.showinfo(title="Entry not found", message="Website data not found")
-
+            readdata = json.load(fileread)
+        except:
+            messagebox.showinfo(title="No Data in the file", message="No Data in the file")
+        else:
+            wsite = website_entry.get()
+            try:
+                email = readdata[wsite]["email"]
+                pwd = readdata[wsite]["pwd"]
+            #messagebox.INFO(f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
+                messagebox.showinfo(title="Hello", message = f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
+            except KeyError:
+                messagebox.showinfo(title="Entry not found", message="Website data not found")
+    finally:
+        fileread.close()
 
 
 
@@ -76,17 +85,24 @@ def add_password():
 
 
             try:
-                with open("data.json", mode = "r") as filejson:
-                     data = json.load(filejson)
+                filejson = open("data.json", mode = "r")
 
             except FileNotFoundError:
                 with open("data.json", mode="w") as filejson:
                     json.dump(datadict, filejson, indent=4)
 
             else:
-                data.update(datadict)
-                with open("data.json", mode="w") as filejson:
-                    json.dump(data, filejson, indent=4)
+                try:
+                    data = json.load(filejson)
+                except:
+                    with open("data.json", mode="w") as filejson:
+                        json.dump(datadict, filejson, indent=4)
+                else:
+                    data.update(datadict)
+                    with open("data.json", mode="w") as filejson:
+                        json.dump(data, filejson, indent=4)
+            finally:
+                filejson.close()
 
 
 
