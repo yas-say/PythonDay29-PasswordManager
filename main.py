@@ -8,7 +8,19 @@ import pyperclip
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def search_website():
     with open("data.json","r") as fileread:
-        print(json.load(fileread))
+        readdata = json.load(fileread)
+        wsite = website_entry.get()
+        try:
+            email = readdata[wsite]["email"]
+            pwd = readdata[wsite]["pwd"]
+        #messagebox.INFO(f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
+            messagebox.showinfo(title="Hello", message = f"Website: {wsite}\n Email: {email}\n Password: {pwd}")
+        except KeyError:
+            messagebox.showinfo(title="Entry not found", message="Website data not found")
+
+
+
+
 
 
 
